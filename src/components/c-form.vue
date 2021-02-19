@@ -4,7 +4,9 @@
       <CTabs></CTabs>
     </div>
     <div class="form__content">
-      <VRegistration></VRegistration>
+      <VAuth v-if="isActive === 'auth'"></VAuth>
+      <VRegistration v-if="isActive === 'registration'"></VRegistration>
+
       <VOthers></VOthers>
     </div>
   </div>
@@ -14,11 +16,18 @@
 import CTabs from "@/components/c-tabs";
 import VRegistration from "@/views/v-registration";
 import VOthers from "@/views/v-others";
+import VAuth from "@/views/v-auth";
 
 export default {
   name: "c-form",
   components: {
+    VAuth,
     CTabs, VRegistration, VOthers
+  },
+  computed: {
+    isActive() {
+      return this.$store.getters.getTab
+    }
   }
 }
 </script>

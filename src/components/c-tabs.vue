@@ -1,14 +1,31 @@
 <template>
   <div class="tabs">
-    <button class="tabs__item">Вход</button>
-    <button class="tabs__item tabs__item-active">Регистрация</button>
+    <button
+        class="tabs__item"
+        :class="{'tabs__item-active': isActive === 'auth'}"
+        @click="changeTab('auth')"
+    >Вход</button>
+    <button
+        class="tabs__item"
+        :class="{'tabs__item-active': isActive === 'registration'}"
+        @click="changeTab('registration')"
+    >Регистрация</button>
   </div>
-
 </template>
 
 <script>
 export default {
-  name: "c-tabs"
+  name: "c-tabs",
+  computed: {
+    isActive() {
+      return this.$store.getters.getTab
+    }
+  },
+  methods: {
+    changeTab(tab) {
+      this.$store.dispatch('changeTab', tab);
+    }
+  },
 }
 </script>
 

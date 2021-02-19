@@ -4,7 +4,8 @@
       <span class="label__title-text">{{ title }}</span>
       <span class="label__title-tooltip" v-tooltip="tooltip">?</span>
     </div>
-    <input :type="type" :id="id" class="label__input" :placeholder="placeholder">
+    <input :type="type" :id="id" class="label__input" :placeholder="placeholder" v-model="value">
+    {{value}}
     <button class="label__toggle" v-if="type === 'password'">
       <img src="@/assets/img/icon-hide.svg" alt="Hide" class="label__toggle-icon">
       <img src="@/assets/img/icon-show.svg" alt="Show" class="label__toggle-icon">
@@ -22,6 +23,11 @@ export default {
     tooltip: String,
     type: String,
     placeholder: String,
+  },
+  data() {
+    return {
+      value: null
+    }
   }
 }
 </script>
