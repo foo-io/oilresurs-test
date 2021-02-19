@@ -1,5 +1,6 @@
 <template>
-  <form class="registration" autocomplete="off">
+  <form class="registration">
+    reg status: {{ userStatus }}
     <div class="grid">
       <div class="grid__row">
         <div class="grid__col">
@@ -89,6 +90,11 @@ export default {
       errorsText: []
     }
   },
+  computed: {
+    userStatus() {
+      return this.$store.getters.getRegistrationStatus
+    }
+  },
   methods: {
     onName(value) {
       this.name.full = value
@@ -141,7 +147,7 @@ export default {
       }
 
       if (password === null) {
-        this.errorsText.push('Пароль должен быть длиннее 3 символов')
+        this.errorsText.push('Введите пароль')
         this.errors.password = true
       }
 
@@ -183,8 +189,14 @@ export default {
           password: this.password,
         }
 
-        // this we send new object `user` send api
-        console.log('Send API:', user)
+        if (this.userStatus === false) {
+          this.$store.dispatch('registerUser', user.email, user.password)
+
+          // this we send new object `user` send api
+          console.log('Send API:', user)
+        } else {
+          console.log('Register: You Registered!')
+        }
       }
     }
   }

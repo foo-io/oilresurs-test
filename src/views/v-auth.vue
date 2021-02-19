@@ -1,5 +1,6 @@
 <template>
-  <form class="registration">
+  <form class="auth">
+    auth status: {{ userStatus }}
     <div class="grid">
       <div class="grid__row">
         <div class="grid__col">
@@ -9,6 +10,8 @@
               tooltip="Введите email"
               type="email"
               placeholder="example@mail.com"
+              @value="onEmail"
+              :error="errors.email"
           ></CLabel>
         </div>
       </div>
@@ -20,12 +23,14 @@
               tooltip="Введите пароль"
               type="password"
               placeholder="—"
+              @value="onPassword"
+              :error="errors.password"
           ></CLabel>
         </div>
       </div>
     </div>
 
-    <button class="button">
+    <button class="button" @click.prevent="send">
       <span class="button__text">Войти</span>
     </button>
     <div class="accept">
@@ -40,6 +45,82 @@ import CLabel from "@/components/c-label";
 export default {
   name: "v-auth",
   components: {CLabel},
+  data() {
+    return {
+      email: null,
+      password: null,
+
+      errors: {
+        password: false,
+        email: false,
+      },
+      errorsText: []
+    }
+  },
+  computed: {
+    userStatus() {
+      return this.$store.getters.getAuthStatus
+    }
+  },
+  methods: {
+    onPassword(value) {
+      this.password = value
+    },
+    onEmail(value) {
+      this.email = value
+    },
+    resetErrors() {
+      this.errorsText = []
+
+      for (let item in this.errors) {
+        this.errors[item] = false
+      }
+    },
+    checkin() {
+      // reset all errors
+      this.resetErrors()
+
+      // vars
+      const password = this.password
+      const email = this.email
+
+      if (password === null) {
+        this.errorsText.push('Введите пароль')
+        this.errors.password = true
+      }
+
+      if (!this.validEmail(email)) {
+        this.errorsText.push('Введите корректный E-mail')
+        this.errors.email = true
+      }
+
+      return this.errorsText.length
+    },
+    validEmail(email) {
+      // vue docs:
+      let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(email)
+    },
+    send() {
+      // checkin
+      if (this.checkin() === 0) {
+        // create object for send api
+        const user = {
+          email: this.email,
+          password: this.password,
+        }
+
+        if (this.userStatus === false) {
+          this.$store.dispatch('authUser', user.email, user.password)
+
+          // this we send new object `user` send api
+          console.log('Send API:', user)
+        } else {
+          console.log('Auth: You Authorized!')
+        }
+      }
+    }
+  }
 }
 </script>
 
