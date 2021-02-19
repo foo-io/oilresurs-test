@@ -1,32 +1,57 @@
 <template>
-  <label :for="id" class="label">
+  <label :for="id" class="label" :class="{'label__error': error}">
     <div class="label__title">
       <span class="label__title-text">{{ title }}</span>
       <span class="label__title-tooltip" v-tooltip="tooltip">?</span>
     </div>
-    <input :type="type" :id="id" class="label__input" :placeholder="placeholder" v-model="value">
-    {{value}}
-    <button class="label__toggle" v-if="type === 'password'">
-      <img src="@/assets/img/icon-hide.svg" alt="Hide" class="label__toggle-icon">
-      <img src="@/assets/img/icon-show.svg" alt="Show" class="label__toggle-icon">
+    <input
+        :type="type === 'password' && visible === true ? 'text' : type"
+        :id="id"
+        class="label__input"
+        :placeholder="placeholder"
+        v-model="value"
+        v-if="type !== 'tel'"
+    >
+    <masked-input
+        v-else
+        v-model="value"
+        mask="\+\7 (111) 111-11-11"
+        :placeholder="placeholder"
+        :type="type"
+        :id="id"
+        class="label__input"
+    />
+    <button class="label__toggle" v-if="type === 'password'" @click.prevent="visible = !visible">
+      <img src="@/assets/img/icon-hide.svg" alt="Hide" class="label__toggle-icon" v-if="!visible">
+      <img src="@/assets/img/icon-show.svg" alt="Show" class="label__toggle-icon" v-else>
       <!-- add active icon for v-if/v-else -->
     </button>
   </label>
 </template>
 
 <script>
+import MaskedInput from 'vue-masked-input'
+
 export default {
   name: "c-label",
+  components: { MaskedInput },
   props: {
     id: String,
     title: String,
     tooltip: String,
     type: String,
     placeholder: String,
+    error: Boolean
   },
   data() {
     return {
-      value: null
+      value: null,
+      visible: false,
+    }
+  },
+  watch: {
+    value() {
+      this.$emit('value', this.value)
     }
   }
 }
@@ -49,6 +74,9 @@ export default {
   &:hover,
   &__focused {
     border-color: #72AF32;
+  }
+  &__error {
+    border-color: #ff9c9c;
   }
 
   &__title {

@@ -9,6 +9,8 @@
               tooltip="Введите ФИО"
               type="text"
               placeholder="Константинопольский Константин Конст..."
+              @value="onName"
+              :error="errors.name"
           ></CLabel>
         </div>
       </div>
@@ -20,6 +22,8 @@
               tooltip="Введите телефон"
               type="tel"
               placeholder="+7 (900) 000-00-00"
+              @value="onPhone"
+              :error="errors.phone"
           ></CLabel>
         </div>
         <div class="grid__col grid__col-50">
@@ -29,6 +33,8 @@
               tooltip="Введите email"
               type="email"
               placeholder="example@mail.com"
+              @value="onEmail"
+              :error="errors.email"
           ></CLabel>
         </div>
       </div>
@@ -40,12 +46,14 @@
               tooltip="Введите пароль"
               type="password"
               placeholder="—"
+              @value="onPassword"
+              :error="errors.password"
           ></CLabel>
         </div>
       </div>
     </div>
 
-    <button class="button">
+    <button class="button" @click.prevent="send">
       <span class="button__text">Зарегистироваться</span>
     </button>
     <div class="accept">
@@ -60,75 +68,129 @@ import CLabel from "@/components/c-label";
 export default {
   name: "v-registration",
   components: {CLabel},
+  data() {
+    return {
+      name: {
+        full: null,
+        first: null,
+        middle: null,
+        last: null,
+      },
+      password: null,
+      phone: null,
+      email: null,
+
+      errors: {
+        name: false,
+        password: false,
+        phone: false,
+        email: false,
+      },
+      errorsText: []
+    }
+  },
+  methods: {
+    onName(value) {
+      this.name.full = value
+    },
+    onPassword(value) {
+      this.password = value
+    },
+    onPhone(value) {
+      this.phone = value
+    },
+    onEmail(value) {
+      this.email = value
+    },
+    destructName() {
+      const fullName = this.name.full
+      const arrayName = fullName.split(' ')
+
+      this.name.first = arrayName[1] ? arrayName[1] : '-'
+      this.name.middle = arrayName[2] ? arrayName[2] : '-'
+      this.name.last = arrayName[0] ? arrayName[0] : '-'
+    },
+    resetErrors() {
+      this.errorsText = []
+
+      for (let item in this.errors) {
+        this.errors[item] = false
+      }
+    },
+    checkin() {
+      // reset all errors
+      this.resetErrors()
+
+      // vars
+      const name = this.name.full
+      const password = this.password
+      const phone = this.phone
+      const email = this.email
+
+      // check name
+      let arrayName = []
+      try {
+        arrayName = name.split(' ')
+      } catch {
+        arrayName = []
+      }
+
+      if (arrayName.length !== 3) {
+        this.errorsText.push('Введите ФИО')
+        this.errors.name = true
+      }
+
+      if (password === null) {
+        this.errorsText.push('Пароль должен быть длиннее 3 символов')
+        this.errors.password = true
+      }
+
+      if (!this.validEmail(email)) {
+        this.errorsText.push('Введите корректный E-mail')
+        this.errors.email = true
+      }
+
+      if (!this.validPhone(phone)) {
+        this.errorsText.push('Введите корректный номер телефона')
+        this.errors.phone = true
+      }
+
+      return this.errorsText.length
+    },
+    validEmail(email) {
+      // vue docs:
+      let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(email)
+    },
+    validPhone(phone) {
+      // https://www.regextester.com/99415
+      let tel = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/gm
+      return tel.test(phone)
+    },
+    send() {
+      // checkin
+      if (this.checkin() === 0) {
+        // destruct full name
+        this.destructName();
+
+        // create object for send api
+        const user = {
+          firstName: this.name.first,
+          middleName: this.name.middle,
+          lastName: this.name.last,
+          phone: this.phone,
+          email: this.email,
+          password: this.password,
+        }
+
+        // this we send new object `user` send api
+        console.log('Send API:', user)
+      }
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
-//button
-.button {
-  display: -webkit-flex;
-  display: -ms-flex;
-  display: flex;
-  font-family: 'Museo Sans Cyrl 700', sans-serif;
-  font-weight: normal;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 16px;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #FFFFFF;
-  position: relative;
-  border-radius: 2px;
-  width: 100%;
-  border: 0;
-  height: 57px;
-  cursor: pointer;
-  background-image: linear-gradient(107.75deg, #72AF32 0%, #4B9B3F 100%), linear-gradient(76.59deg, #6C9E39 1.93%, #79B041 98.89%);
-  transition: opacity .2s ease-out;
-  margin-top: 24px;
 
-  &::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    content: "";
-    opacity: 0;
-    transition: opacity .2s ease;
-  }
-  &:hover {
-    &::before {
-      opacity: 1;
-      background-image: linear-gradient(157.9deg,#7bc52e 23.86%,#4cab3d 75.28%);
-    }
-  }
-  &__text {
-    position: relative;
-    z-index: 1;
-  }
-}
-
-//accept
-.accept {
-  font-family: 'Museo Sans Cyrl 300', sans-serif;
-  font-weight: 300;
-  font-style: normal;
-  font-size: 10px;
-  line-height: 16px;
-  text-align: center;
-  letter-spacing: 0.02em;
-  color: #545454;
-  margin-top: 17px;
-  &__link {
-    color: #545454;
-    transition: color .2s ease-out;
-
-    &:hover {
-      color: #72AF32;
-    }
-  }
-}
 </style>
