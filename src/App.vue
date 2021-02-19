@@ -174,4 +174,42 @@ a {
     }
   }
 }
+
+// link
+.links {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+.link {
+  font-family: 'Museo Sans Cyrl 300', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 24px;
+  color: #000000;
+  display: flex;
+  border-bottom: 1px solid #E0E0E0;
+  transition: color .2s ease-out, border-color .2s ease-out;
+  width: fit-content;
+
+  &:hover {
+    color: #72AF32;
+    border-color: #72AF32;
+  }
+
+  &__disabled {
+    color: #828282;
+
+    &:hover {
+      cursor: not-allowed;
+      color: #828282;
+      border-color: #828282;
+    }
+  }
+
+  &__right {
+    margin-left: auto;
+  }
+}
 </style>

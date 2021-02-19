@@ -6,6 +6,7 @@
     <div class="form__content">
       <VAuth v-if="isActive === 'auth'"></VAuth>
       <VRegistration v-if="isActive === 'registration'"></VRegistration>
+      <VVerify v-if="isActive === 'verify'"></VVerify>
 
       <VOthers></VOthers>
     </div>
@@ -17,10 +18,12 @@ import CTabs from "@/components/c-tabs";
 import VRegistration from "@/views/v-registration";
 import VOthers from "@/views/v-others";
 import VAuth from "@/views/v-auth";
+import VVerify from "@/views/v-verify";
 
 export default {
   name: "c-form",
   components: {
+    VVerify,
     VAuth,
     CTabs, VRegistration, VOthers
   },

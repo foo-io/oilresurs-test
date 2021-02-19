@@ -1,7 +1,7 @@
 <template>
   <form class="auth">
-    auth status: {{ userStatus }}
-    <div class="grid">
+    auth status: {{ userStatus }}; method: {{ method }}
+    <div class="grid" v-if="method === 'email'">
       <div class="grid__row">
         <div class="grid__col">
           <CLabel
@@ -28,6 +28,81 @@
           ></CLabel>
         </div>
       </div>
+      <div class="grid__row">
+        <div class="grid__col">
+          <CCheckbox
+            id=""
+            title="Запомнить меня"
+            @value="onRemember"
+          ></CCheckbox>
+        </div>
+        <div class="grid__col">
+          <a href="#" class="link link__right">Забыли пароль?</a>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="method === 'sberbank'">
+      <div class="grid__row">
+        <div class="grid__col">
+          <CLabel
+              id="sberbank"
+              title="Сбербанк ID"
+              tooltip="Введите Сбербанк ID"
+              type="text"
+              placeholder="-"
+              @value="onSberbank"
+              :error="errors.sberbank"
+          ></CLabel>
+        </div>
+      </div>
+      <div class="grid__row">
+        <div class="grid__col">
+          <CLabel
+              id="password"
+              title="Пароль"
+              tooltip="Введите пароль"
+              type="password"
+              placeholder="—"
+              @value="onPassword"
+              :error="errors.password"
+          ></CLabel>
+        </div>
+      </div>
+      <div class="grid__row">
+        <div class="grid__col">
+          <CCheckbox
+              id=""
+              title="Запомнить меня"
+              @value="onRemember"
+          ></CCheckbox>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="method === 'phone'">
+      <div class="grid__row">
+        <div class="grid__col">
+          <CLabel
+              id="phone"
+              title="Телефон"
+              tooltip="Введите номер телефона"
+              type="tel"
+              placeholder="+7 (900) 000-00-00"
+              @value="onPhone"
+              :error="errors.phone"
+          ></CLabel>
+        </div>
+      </div>
+      <div class="grid__row">
+        <div class="grid__col">
+          <CCheckbox
+              id=""
+              title="Запомнить меня"
+              @value="onRemember"
+          ></CCheckbox>
+        </div>
+      </div>
     </div>
 
     <button class="button" @click.prevent="send">
@@ -41,16 +116,22 @@
 
 <script>
 import CLabel from "@/components/c-label";
+import CCheckbox from "@/components/c-checkbox";
 
 export default {
   name: "v-auth",
-  components: {CLabel},
+  components: {CCheckbox, CLabel},
   data() {
     return {
+      sberbank: null,
+      phone: null,
       email: null,
       password: null,
+      remember: false,
 
       errors: {
+        sberbank: false,
+        phone: false,
         password: false,
         email: false,
       },
@@ -60,7 +141,10 @@ export default {
   computed: {
     userStatus() {
       return this.$store.getters.getAuthStatus
-    }
+    },
+    method() {
+      return this.$store.getters.getMethod
+    },
   },
   methods: {
     onPassword(value) {
@@ -68,6 +152,15 @@ export default {
     },
     onEmail(value) {
       this.email = value
+    },
+    onRemember(value) {
+      this.remember = value
+    },
+    onSberbank(value) {
+      this.sberbank = value
+    },
+    onPhone(value) {
+      this.phone = value
     },
     resetErrors() {
       this.errorsText = []
@@ -83,13 +176,25 @@ export default {
       // vars
       const password = this.password
       const email = this.email
+      const sberbank = this.sberbank
+      const phone = this.phone
 
-      if (password === null) {
+      if (password === null && this.method !== 'phone') {
         this.errorsText.push('Введите пароль')
         this.errors.password = true
       }
 
-      if (!this.validEmail(email)) {
+      if (sberbank === null && this.method === 'sberbank') {
+        this.errorsText.push('Введите Сбербанк ID')
+        this.errors.sberbank = true
+      }
+
+      if (!this.validPhone(phone) && this.method === 'phone') {
+        this.errorsText.push('Введите корректный номер телефона')
+        this.errors.phone = true
+      }
+
+      if (!this.validEmail(email) && this.method === 'email') {
         this.errorsText.push('Введите корректный E-mail')
         this.errors.email = true
       }
@@ -101,20 +206,30 @@ export default {
       let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       return re.test(email)
     },
+    validPhone(phone) {
+      // https://www.regextester.com/99415
+      let tel = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/gm
+      return tel.test(phone)
+    },
     send() {
       // checkin
       if (this.checkin() === 0) {
         // create object for send api
         const user = {
-          email: this.email,
+          method: this.method,
+          login: this.email ? this.email : this.sberbank ? this.sberbank : this.phone ? this.phone : '', // че то жестко, можно было через spread это как нибудь сделать... да ладно, 4-49 утра, как бы, пятница и тд тп
           password: this.password,
+          remember: this.remember,
         }
 
         if (this.userStatus === false) {
-          this.$store.dispatch('authUser', user.email, user.password)
+          this.$store.dispatch('authUser', user.login, user.password)
 
           // this we send new object `user` send api
           console.log('Send API:', user)
+
+          // if method = phone -> show verify form
+          this.$store.dispatch('changeTab', 'verify')
         } else {
           console.log('Auth: You Authorized!')
         }

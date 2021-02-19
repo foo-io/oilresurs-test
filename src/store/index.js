@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     tab: 'auth', // default open auth tab
+    method: 'email', // default auth method = email
     auth: {
       status: false,
       email: null,
@@ -20,6 +21,9 @@ export default new Vuex.Store({
   mutations: {
     changeTab: (state, current) => {
       state.tab = current
+    },
+    changeMethod: (state, current) => {
+      state.method = current
     },
     authUser: (state, email, password) => {
       state.auth.status = true
@@ -36,6 +40,9 @@ export default new Vuex.Store({
     changeTab: (ctx, current) => {
       ctx.commit('changeTab', current)
     },
+    changeMethod: (ctx, current) => {
+      ctx.commit('changeMethod', current)
+    },
     authUser: (ctx, email, password) => {
       ctx.commit('authUser', email, password)
     },
@@ -45,6 +52,7 @@ export default new Vuex.Store({
   },
   getters: {
     getTab: state => state.tab,
+    getMethod: state => state.method,
     getAuthStatus: state => state.auth.status,
     getRegistrationStatus: state => state.registration.status,
   }

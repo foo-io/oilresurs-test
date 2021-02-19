@@ -2,13 +2,18 @@
   <div class="others">
     <div class="others__title">Другие способы регистрации</div>
     <div class="others__items">
-      <div class="others__item">
-        <button class="others__item-button others__item-default">
+      <div class="others__item" v-if="method !== 'sberbank'">
+        <button class="others__item-button others__item-default" @click="changeMethod('sberbank')">
           Войти по Сбербанк ID
         </button>
       </div>
-      <div class="others__item">
-        <button class="others__item-button others__item-default">
+      <div class="others__item" v-if="method !== 'email'">
+        <button class="others__item-button others__item-default" @click="changeMethod('email')">
+          Войти по E-mail
+        </button>
+      </div>
+      <div class="others__item" v-if="method !== 'phone'">
+        <button class="others__item-button others__item-default" @click="changeMethod('phone')">
           По номеру телефона
         </button>
       </div>
@@ -43,7 +48,18 @@
 
 <script>
 export default {
-  name: "v-others"
+  name: "v-others",
+  computed: {
+    method() {
+      return this.$store.getters.getMethod
+    }
+  },
+  methods: {
+    changeMethod(method) {
+      this.$store.dispatch('changeTab', 'auth')
+      this.$store.dispatch('changeMethod', method)
+    }
+  }
 }
 </script>
 

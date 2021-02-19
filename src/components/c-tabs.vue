@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs">
+  <div class="tabs" :class="{'tabs__hidden': isActive === 'verify'}">
     <button
         class="tabs__item"
         :class="{'tabs__item-active': isActive === 'auth'}"
@@ -36,6 +36,10 @@ export default {
   display: flex;
   flex: 1;
 
+  &__hidden {
+    visibility: hidden;
+    opacity: 0;
+  }
   &__item {
     background: #FAFAFA;
     border: 1px solid #E8E8E8;
