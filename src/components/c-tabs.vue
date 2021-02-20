@@ -31,8 +31,6 @@ export default {
 
 <style scoped lang="scss">
 .tabs {
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
   flex: 1;
 

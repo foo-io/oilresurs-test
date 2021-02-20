@@ -65,16 +65,12 @@ export default {
 
 <style scoped lang="scss">
 .others {
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
   flex-direction: column;
 
   margin-top: 29px;
 
   &__title {
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     justify-content: center;
     margin-bottom: 23px;
@@ -88,16 +84,12 @@ export default {
   }
 
   &__items {
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     flex-wrap: wrap;
     margin: 0 -10px;
   }
 
   &__item {
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     border-radius: 2px;
     overflow: hidden;
@@ -111,8 +103,6 @@ export default {
     }
 
     &-button {
-      display: -webkit-flex;
-      display: -ms-flex;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -146,8 +136,6 @@ export default {
     }
 
     &-icon {
-      display: -webkit-flex;
-      display: -ms-flex;
       display: flex;
       margin-right: 6px;
     }

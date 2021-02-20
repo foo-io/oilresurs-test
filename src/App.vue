@@ -43,8 +43,6 @@ a {
 
 #app {
   background: #FAFAFA;
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
   min-height: 100vh;
   min-width: 320px;
@@ -52,8 +50,6 @@ a {
 }
 
 .page {
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -65,8 +61,6 @@ a {
 
 // main
 .main {
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
   flex: 1;
   justify-content: space-between;
@@ -78,14 +72,10 @@ a {
 
 //grids
 .grid {
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
   flex-direction: column;
 
   &__row {
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     flex: 1;
     margin: 0 -10px 20px;
@@ -96,8 +86,6 @@ a {
   }
 
   &__col {
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     flex: 1;
     padding: 0 10px;
@@ -129,8 +117,8 @@ a {
   height: 57px;
   cursor: pointer;
   background-image: linear-gradient(107.75deg, #72AF32 0%, #4B9B3F 100%), linear-gradient(76.59deg, #6C9E39 1.93%, #79B041 98.89%);
-  transition: opacity .2s ease-out;
   margin-top: 24px;
+  overflow: hidden;
 
   &::before {
     position: absolute;
@@ -140,12 +128,12 @@ a {
     left: 0;
     content: "";
     opacity: 0;
-    transition: opacity .2s ease;
+    transition: opacity 0.45s;
+    background-image: linear-gradient(157.9deg,#7bc52e 23.86%,#4cab3d 75.28%);
   }
   &:hover {
     &::before {
       opacity: 1;
-      background-image: linear-gradient(157.9deg,#7bc52e 23.86%,#4cab3d 75.28%);
     }
   }
   &__text {

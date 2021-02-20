@@ -242,8 +242,6 @@ export default {
 <style scoped lang="scss">
 //button
 .button {
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
   font-family: 'Museo Sans Cyrl 700', sans-serif;
   font-weight: normal;

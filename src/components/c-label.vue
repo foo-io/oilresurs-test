@@ -59,8 +59,6 @@ export default {
 
 <style scoped lang="scss">
 .label {
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
   flex-direction: column;
   background: #FFFFFF;
@@ -80,8 +78,6 @@ export default {
   }
 
   &__title {
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     margin-bottom: 15px;
 
@@ -96,8 +92,6 @@ export default {
     }
 
     &-tooltip {
-      display: -webkit-flex;
-      display: -ms-flex;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -115,8 +109,6 @@ export default {
   }
 
   &__input {
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     border: 0;
     outline: 0;
@@ -139,8 +131,6 @@ export default {
 
   &__toggle {
     position: absolute;
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     background: 0;
     border: 0;

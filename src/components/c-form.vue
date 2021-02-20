@@ -37,22 +37,16 @@ export default {
 
 <style scoped lang="scss">
 .form {
-  display: -webkit-flex;
-  display: -ms-flex;
   display: flex;
   flex: 1;
   flex-direction: column;
   max-width: 407px;
 
   &__tabs {
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
   }
 
   &__content {
-    display: -webkit-flex;
-    display: -ms-flex;
     display: flex;
     flex-direction: column;
 

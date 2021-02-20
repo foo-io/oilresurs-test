@@ -83,7 +83,7 @@ input.vue-pincode-input {
 // timer
 .timer {
   &__text {
-    font-family: 'Museo Sans Cyrl 300';
+    font-family: 'Museo Sans Cyrl 300', sans-serif;
     font-style: normal;
     font-weight: 300;
     font-size: 12px;
