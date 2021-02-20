@@ -53,6 +53,7 @@
               placeholder="-"
               @value="onSberbank"
               :error="errors.sberbank"
+              key="sberbank"
           ></CLabel>
         </div>
       </div>
@@ -91,6 +92,7 @@
               placeholder="+7 (900) 000-00-00"
               @value="onPhone"
               :error="errors.phone"
+              key="phone"
           ></CLabel>
         </div>
       </div>

@@ -136,7 +136,7 @@ export default {
       // check name
       let arrayName = []
       try {
-        arrayName = name.trim().split(' ')
+        arrayName = name.trim().split(' ') // trim можно было и на v-model повесить
       } catch {
         arrayName = []
       }

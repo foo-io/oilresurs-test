@@ -9,7 +9,7 @@
         :id="id"
         class="label__input"
         :placeholder="placeholder"
-        v-model="value"
+        v-model.lazy="value"
         v-if="type !== 'tel'"
     >
     <masked-input
@@ -49,17 +49,9 @@ export default {
       visible: false,
     }
   },
-  computed: {
-    method() {
-      return this.$store.getters.getMethod
-    }
-  },
   watch: {
     value() {
       this.$emit('value', this.value)
-    },
-    method() {
-      this.value = null
     }
   }
 }
