@@ -49,9 +49,17 @@ export default {
       visible: false,
     }
   },
+  computed: {
+    method() {
+      return this.$store.getters.getMethod
+    }
+  },
   watch: {
     value() {
       this.$emit('value', this.value)
+    },
+    method() {
+      this.value = null
     }
   }
 }

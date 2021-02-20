@@ -136,7 +136,7 @@ export default {
       // check name
       let arrayName = []
       try {
-        arrayName = name.split(' ')
+        arrayName = name.trim().split(' ')
       } catch {
         arrayName = []
       }
@@ -159,6 +159,13 @@ export default {
       if (!this.validPhone(phone)) {
         this.errorsText.push('Введите корректный номер телефона')
         this.errors.phone = true
+      }
+
+      // show errors in console for debugging
+      if (this.errorsText.length) {
+        for (let error of this.errorsText) {
+          console.log(error)
+        }
       }
 
       return this.errorsText.length

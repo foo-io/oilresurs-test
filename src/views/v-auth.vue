@@ -208,8 +208,8 @@ export default {
     },
     validPhone(phone) {
       // https://www.regextester.com/99415
-      let tel = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/gm
-      return tel.test(phone)
+      let re = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/gm
+      return re.test(phone)
     },
     send() {
       // checkin
@@ -234,8 +234,8 @@ export default {
           console.log('Auth: You Authorized!')
         }
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
